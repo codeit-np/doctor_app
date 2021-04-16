@@ -1,4 +1,5 @@
 import 'package:doctor_app/component/client_home.dart';
+import 'package:doctor_app/component/profile.dart';
 import 'package:doctor_app/component/search1.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,17 @@ class _ClientDashboardState extends State<ClientDashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Doctor on Hand"),
+          actions: [
+            Row(
+              children: [
+                IconButton(icon: Icon(Icons.message), onPressed: () {}),
+                IconButton(icon: Icon(Icons.notifications), onPressed: () {})
+              ],
+            )
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).accentColor,
           unselectedItemColor: Colors.black,
@@ -34,7 +46,9 @@ class _ClientDashboardState extends State<ClientDashboard> {
             ? clientHomeComponent(context)
             : index == 1
                 ? SearchScreen()
-                : Text("Hello"),
+                : index == 3
+                    ? profile()
+                    : Text("Hello"),
       ),
     );
   }

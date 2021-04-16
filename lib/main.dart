@@ -1,12 +1,21 @@
 import 'package:doctor_app/pages/client/dashboard.dart';
+import 'package:doctor_app/pages/doctorprofile.dart';
+import 'package:doctor_app/pages/hospitalprofile.dart';
 import 'package:doctor_app/pages/intro.dart';
 import 'package:doctor_app/pages/login.dart';
 import 'package:doctor_app/pages/signup.dart';
 import 'package:doctor_app/pages/splash.dart';
+import 'package:doctor_app/provider/doctoronhand.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => DOH()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +34,8 @@ class MyApp extends StatelessWidget {
         "login": (context) => LoginScreen(),
         "signup": (context) => SignupScreen(),
         "clientdashboard": (context) => ClientDashboard(),
+        "doctorprofile": (context) => DoctorProfileScreen(),
+        "hospitalprofile": (context) => HospitalProfileScreen(),
       },
     );
   }
