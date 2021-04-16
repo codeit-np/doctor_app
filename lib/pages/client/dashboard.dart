@@ -47,7 +47,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
             : index == 1
                 ? SearchScreen()
                 : index == 3
-                    ? profile()
+                    ? profile(context)
                     : Text("Hello"),
       ),
     );

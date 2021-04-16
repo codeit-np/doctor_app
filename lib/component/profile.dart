@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-Widget profile() {
+import 'package:doctor_app/api/api.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Widget profile(context) {
   return SingleChildScrollView(
     child: Column(
       children: [
@@ -12,11 +16,15 @@ Widget profile() {
         ),
         Card(
           child: ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'userprofile');
+            },
             leading: Icon(Icons.person_outline),
             title: Text("My Account"),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, 'userprofile');
+              },
               icon: Icon(Icons.arrow_forward_ios),
             ),
           ),
@@ -34,11 +42,15 @@ Widget profile() {
         ),
         Card(
           child: ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'changepassword');
+            },
             leading: Icon(Icons.lock),
             title: Text("Change Password"),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, 'changepassword');
+              },
               icon: Icon(Icons.arrow_forward_ios),
             ),
           ),
@@ -56,7 +68,18 @@ Widget profile() {
         ),
         Card(
           child: ListTile(
-            onTap: () {},
+            onTap: () async {
+              Map data = {};
+              var response = await Api().postData(data, 'logout');
+              var result = json.decode(response.body);
+              if (result['message'] == 'success') {
+                SharedPreferences preferences =
+                    await SharedPreferences.getInstance();
+
+                preferences.remove('token');
+                Navigator.popAndPushNamed(context, 'intro');
+              }
+            },
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             trailing: IconButton(
