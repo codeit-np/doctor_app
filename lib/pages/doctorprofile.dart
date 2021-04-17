@@ -47,15 +47,16 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           child: Image.network(link + snapshot.data['image']),
                         ),
                         ListTile(
-                          trailing: IconButton(
-                              icon: Icon(Icons.favorite_outline),
-                              onPressed: () async {
-                                Map data = {"doctor_id": snapshot.data['id']};
-                                var response =
-                                    await Api().postData(data, 'favourates');
-                                var result = json.decode(response.body);
-                                print(result);
-                              }),
+                          trailing: ElevatedButton(
+                            onPressed: () async {
+                              Map data = {"doctor_id": snapshot.data['id']};
+                              var response =
+                                  await Api().postData(data, 'favourates');
+                              var result = json.decode(response.body);
+                              print(result);
+                            },
+                            child: Text("Add to favourate"),
+                          ),
                           title: Text(snapshot.data['name']),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
