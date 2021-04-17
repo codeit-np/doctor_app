@@ -1,4 +1,5 @@
 import 'package:doctor_app/component/client_home.dart';
+import 'package:doctor_app/component/favourate.dart';
 import 'package:doctor_app/component/profile.dart';
 import 'package:doctor_app/component/search1.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,11 @@ class _ClientDashboardState extends State<ClientDashboard> {
             ? clientHomeComponent(context)
             : index == 1
                 ? SearchScreen()
-                : index == 3
-                    ? profile(context)
-                    : Text("Hello"),
+                : index == 2
+                    ? Favourate()
+                    : index == 3
+                        ? profile(context)
+                        : Text("Hello"),
       ),
     );
   }

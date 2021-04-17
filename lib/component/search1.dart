@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:doctor_app/api/api.dart';
 import 'package:doctor_app/const/const.dart';
+import 'package:doctor_app/provider/doctoronhand.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -27,6 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    DOH provider = Provider.of<DOH>(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -53,60 +56,68 @@ class _SearchScreenState extends State<SearchScreen> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data[0]['doctors'].length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              child: Image.network(
-                                link +
-                                    "uploadedFiles/" +
-                                    snapshot.data[0]['doctors'][index]['image']
-                                        .toString(),
-                                fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          provider.setDoctorID(
+                              snapshot.data[0]['doctors'][index]['id']);
+                          Navigator.pushNamed(context, 'doctorprofile');
+                        },
+                        child: Card(
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                child: Image.network(
+                                  link +
+                                      snapshot.data[0]['doctors'][index]
+                                              ['image']
+                                          .toString(),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    snapshot.data[0]['doctors'][index]['name'],
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    "Mobile" +
-                                        snapshot.data[0]['doctors'][index]
-                                                ['mobile']
-                                            .toString(),
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Text(
-                                    "Specialist" +
-                                        snapshot.data[0]['doctors'][index]
-                                                ['specialist']
-                                            .toString(),
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Text(
-                                    "City: " +
-                                        snapshot.data[0]['doctors'][index]
-                                                ['city']
-                                            .toString(),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
+                              SizedBox(
+                                width: 20,
                               ),
-                            )
-                          ],
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      snapshot.data[0]['doctors'][index]
+                                          ['name'],
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "Mobile" +
+                                          snapshot.data[0]['doctors'][index]
+                                                  ['mobile']
+                                              .toString(),
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Text(
+                                      "Specialist" +
+                                          snapshot.data[0]['doctors'][index]
+                                                  ['specialist']
+                                              .toString(),
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Text(
+                                      "City: " +
+                                          snapshot.data[0]['doctors'][index]
+                                                  ['city']
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },
