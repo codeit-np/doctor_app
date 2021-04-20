@@ -80,6 +80,7 @@ class _HospitalProfileScreenState extends State<HospitalProfileScreen> {
             ),
             ListTile(
               title: Text("Nearest Hospitals"),
+              subtitle: Text("Nearest Hospital within 16km"),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
