@@ -18,12 +18,18 @@ class _HospitalProfileScreenState extends State<HospitalProfileScreen> {
     return data;
   }
 
+  Future getNearestHospital(int id) async {
+    var response = await Api().getData('nearest/$id');
+    var data = json.decode(response.body);
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     DOH provider = Provider.of<DOH>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doctor Profile"),
+        title: Text("Hospital Profile"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -71,7 +77,79 @@ class _HospitalProfileScreenState extends State<HospitalProfileScreen> {
                     );
                 }
               },
-            )
+            ),
+            ListTile(
+              title: Text("Nearest Hospitals"),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 250,
+              child: FutureBuilder(
+                future: getNearestHospital(provider.getHospitalID),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          var mydata = snapshot.data[index];
+                          return GestureDetector(
+                            onTap: () {
+                              provider.setHospotalID(mydata['id']);
+                              Navigator.pushNamed(context, 'hospitalprofile');
+                            },
+                            child: Container(
+                              width: 200,
+                              child: Card(
+                                elevation: .2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 200,
+                                      height: 180,
+                                      child: Image.network(
+                                        link + mydata['image'],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(mydata['name']),
+                                          Text(
+                                            'Address: ' + mydata['city'],
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                          Text(
+                                            'Mobile: ' +
+                                                mydata['mobile'].toString(),
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
