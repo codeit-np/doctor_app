@@ -4,7 +4,9 @@ import 'package:doctor_app/api/api.dart';
 import 'package:doctor_app/const/const.dart';
 import 'package:doctor_app/provider/doctoronhand.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class HospitalProfileScreen extends StatefulWidget {
   @override
@@ -72,7 +74,41 @@ class _HospitalProfileScreenState extends State<HospitalProfileScreen> {
                                   snapshot.data['ward'].toString())
                             ],
                           ),
-                        )
+                        ),
+                        ListTile(
+                          title: Text("Hospital Lication"),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 250,
+                          child: FlutterMap(
+                            options: MapOptions(
+                              center: LatLng(double.parse(snapshot.data['lat']),
+                                  double.parse(snapshot.data['lon'])),
+                              zoom: 13.0,
+                            ),
+                            layers: [
+                              TileLayerOptions(
+                                  urlTemplate:
+                                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                  subdomains: ['a', 'b', 'c']),
+                              MarkerLayerOptions(
+                                markers: [
+                                  Marker(
+                                    width: 24.0,
+                                    height: 24.0,
+                                    point: LatLng(
+                                        double.parse(snapshot.data['lat']),
+                                        double.parse(snapshot.data['lon'])),
+                                    builder: (ctx) => Container(
+                                      child: Icon(Icons.place),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     );
                 }
